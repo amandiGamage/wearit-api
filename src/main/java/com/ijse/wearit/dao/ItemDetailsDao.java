@@ -1,6 +1,5 @@
 package com.ijse.wearit.dao;
 
-import com.ijse.wearit.dao.custom.ItemDaoCustom;
 import com.ijse.wearit.dao.custom.ItemDetailsDaoCustom;
 import com.ijse.wearit.model.ItemDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
