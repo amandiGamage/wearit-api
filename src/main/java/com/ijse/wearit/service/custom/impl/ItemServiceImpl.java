@@ -2,6 +2,7 @@ package com.ijse.wearit.service.custom.impl;
 
 import com.ijse.wearit.dao.ItemDao;
 import com.ijse.wearit.dto.ItemDTO;
+import com.ijse.wearit.model.Item;
 import com.ijse.wearit.service.custom.ItemService;
 import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO add(ItemDTO itemDTO) throws Exception {
-        return null;
+        ItemDTO savedDTO = (ItemDTO) modelConverter.convertToDTO(
+                itemDao.save((Item) modelConverter.convertToModel(itemDTO,Item.class)),ItemDTO.class);
+        return savedDTO;
     }
 
     @Override
