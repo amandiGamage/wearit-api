@@ -8,6 +8,8 @@ import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class OrderDetailsServiceImpl implements OrderDetailsService {
 
@@ -45,7 +47,15 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
     @Override
     public OrderDetailsDTO findById(Integer id) throws Exception {
-        return null;
+        Optional<OrderDetails> byId = orderDetailsDao.findById(id);
+        boolean present = byId.isPresent();
+        if (present){
+            OrderDetailsDTO orderDetailsDTO = (OrderDetailsDTO)
+                    modelConverter.convertToDTO(byId.get(),OrderDetails.class);
+            return orderDetailsDTO;
+        }else {
+            return null;
+        }
     }
 
     @Override
