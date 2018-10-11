@@ -2,9 +2,11 @@ package com.ijse.wearit.service.custom.impl;
 
 import com.ijse.wearit.dao.CategoryDao;
 import com.ijse.wearit.dao.ItemDao;
+import com.ijse.wearit.dao.ItemDetailsDao;
 import com.ijse.wearit.dto.ItemDTO;
 import com.ijse.wearit.model.Category;
 import com.ijse.wearit.model.Item;
+import com.ijse.wearit.model.ItemDetails;
 import com.ijse.wearit.service.custom.ItemService;
 import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import javax.servlet.ServletContext;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +28,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private ItemDetailsDao itemDetailsDao;
 
     @Autowired
     private ModelConverter modelConverter;
@@ -70,6 +76,38 @@ public class ItemServiceImpl implements ItemService {
             }
         }
         return result;
+    }
+
+    @Override
+    public ItemDTO getItemByDescription(String description) throws Exception {
+        ItemDTO itemDTO = (ItemDTO) modelConverter.convertToDTO(itemDao.getItemByDescription(description),ItemDTO.class);
+        return itemDTO;
+    }
+
+    @Override
+    public boolean deleteItemByDescription(String description) throws Exception {
+        boolean result = false;
+
+        Item searchedItem = itemDao.getItemByDescription(description);
+        result = itemDao.deleteItemByDescription(description);
+
+        if(result){
+            List<ItemDetails> itemDetailsList = itemDetailsDao.searchByItemID(searchedItem);
+            if(itemDetailsList == null){
+                System.out.println("Delete operation is success");
+                return result;
+            }else{
+                for(ItemDetails itemDetails : itemDetailsList){
+                    itemDetailsDao.delete(itemDetails);
+                }
+                System.out.println("Delete operation is success");
+                return  result;
+            }
+        }else{
+            result = false;
+            System.out.println("Delete operation is failed.");
+        }
+        return  result;
     }
 
     @Override
