@@ -44,13 +44,4 @@ public class ItemDetailsDaoImpl implements ItemDetailsDaoCustom {
         c2.add(Restrictions.eq("item", item));
         return (ItemDetails) c2.uniqueResult();
     }
-
-    @Override
-    public boolean updateItemDetails(ItemDetails itemDetails) throws Exception {
-        Session s= sessionFactory.openSession();
-        s.update(itemDetails);
-        s.close();
-        System.out.println("Called");
-        return true;
-    }
 }
