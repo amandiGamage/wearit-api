@@ -9,5 +9,4 @@ import java.util.List;
 public interface ItemDetailsDaoCustom {
     public List<ItemDetails> searchByItemID(Item item);
     public ItemDetails getItemDetailsBySizeAndItem(Sizes sizeByName, Item item)throws Exception;
-    public boolean updateItemDetails(ItemDetails itemDetails)throws Exception;
 }

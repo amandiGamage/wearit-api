@@ -6,5 +6,4 @@ import com.ijse.wearit.model.User;
 public interface UserDaoCustom {
     public User getUserByUserName(String userName)throws Exception;
     public ShoppingCart getShoppingCartByUserId(Integer userId)throws Exception;
-    public boolean updateUser(User user)throws Exception;
 }

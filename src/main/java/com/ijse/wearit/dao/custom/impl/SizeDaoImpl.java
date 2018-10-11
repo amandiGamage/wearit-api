@@ -34,13 +34,4 @@ public class SizeDaoImpl implements SizeDaoCustom {
         Sizes z = (Sizes) c2.uniqueResult();
         return z;
     }
-
-    @Override
-    public boolean updateSize(Sizes sizes) throws Exception {
-        Session s= sessionFactory.openSession();
-        s.update(sizes);
-        s.close();
-        System.out.println("Called");
-        return true;
-    }
 }

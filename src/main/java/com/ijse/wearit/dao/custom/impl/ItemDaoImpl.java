@@ -47,13 +47,4 @@ public class ItemDaoImpl implements ItemDaoCustom {
             return false;
         }
     }
-
-    @Override
-    public boolean updateItem(Item item) throws Exception {
-        Session s= sessionFactory.openSession();
-        s.update(item);
-        s.close();
-        System.out.println("Called");
-        return true;
-    }
 }

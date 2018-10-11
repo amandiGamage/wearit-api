@@ -29,10 +29,12 @@ public class UserDaoImpl implements UserDaoCustom {
 
     @Override
     public User getUserByUserName(String userName) throws Exception {
-        Criteria c2 = sessionFactory.getCurrentSession().createCriteria(User.class);
+        Session s= sessionFactory.openSession();
+        Criteria c2 =s.createCriteria(User.class);
         c2.add(Restrictions.eq("userName", userName));
         c2.setMaxResults(1);
         User z = (User) c2.uniqueResult();
+        s.close();
         return z;
     }
 
@@ -43,14 +45,5 @@ public class UserDaoImpl implements UserDaoCustom {
         c2.setMaxResults(1);
         User z = (User) c2.uniqueResult();
         return z.getShoppingCart();
-    }
-
-    @Override
-    public boolean updateUser(User user) throws Exception {
-        Session s= sessionFactory.openSession();
-        s.update(user);
-        s.close();
-        System.out.println("Called");
-        return true;
     }
 }

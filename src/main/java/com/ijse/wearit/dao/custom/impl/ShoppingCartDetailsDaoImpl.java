@@ -44,13 +44,4 @@ public class ShoppingCartDetailsDaoImpl implements ShoppingCartDetailsDaoCustom 
         List<ShoppingCartDetails> list = c2.list();
         return list;
     }
-
-    @Override
-    public boolean updateShoppingCartDetails(ShoppingCartDetails shoppingCartDetails) throws Exception {
-        Session s= sessionFactory.openSession();
-        s.update(shoppingCartDetails);
-        s.close();
-        System.out.println("Called");
-        return true;
-    }
 }
