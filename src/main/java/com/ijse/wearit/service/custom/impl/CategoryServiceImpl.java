@@ -52,7 +52,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean delete(CategoryDTO categoryDTO) throws Exception {
-        return false;
+        categoryDao.delete((Category) modelConvertor.convertToModel(categoryDTO,Category.class));
+        return true;
     }
 
     @Override
