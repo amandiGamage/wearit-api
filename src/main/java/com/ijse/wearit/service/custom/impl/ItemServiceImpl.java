@@ -42,7 +42,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public boolean delete(ItemDTO itemDTO) throws Exception {
-        return false;
+        itemDao.delete((Item) modelConverter.convertToModel(itemDTO,Item.class));
+        return true;
+
     }
 
     @Override
