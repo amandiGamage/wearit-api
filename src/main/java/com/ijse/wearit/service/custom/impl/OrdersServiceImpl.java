@@ -1,13 +1,14 @@
 package com.ijse.wearit.service.custom.impl;
 
-import com.ijse.wearit.dao.OrdersDao;
+import com.ijse.wearit.dao.*;
 import com.ijse.wearit.dto.OrdersDTO;
-import com.ijse.wearit.model.Orders;
+import com.ijse.wearit.model.*;
 import com.ijse.wearit.service.custom.OrdersService;
 import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,9 +20,59 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private ModelConverter modelConverter;
 
+    @Autowired
+    private ShoppingCartDetailsDao shoppingCartDetailsDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private ShoppingCartDao shoppingCartDao;
+
+    @Autowired
+    private PaymentMethodDao paymentMethodDao;
+
+    @Autowired
+    private PaymentDao paymentDao;
+
     @Override
     public boolean addOrderss(String userName) throws Exception {
-        return false;
+        boolean result = false;
+        User user = userDao.getUserByUserName(userName);
+        ShoppingCart shoppingCart = user.getShoppingCart();
+
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setPaymentMethod("Credit Card");
+        paymentMethodDao.save(paymentMethod);
+
+        Payment payment = new Payment();
+        payment.setPaymentMethod(paymentMethod);
+        payment.setPaymentResponseMessage("Paid");
+        payment.setUserIdOrSessionId("2");
+        paymentDao.save(payment);
+
+        Orders orders =  new Orders();
+        orders.setUser(user);
+        orders.setPayment(payment);
+        orders.setOrderDate(shoppingCart.getAddedDate());
+        orders.setOrderAmount(shoppingCart.getTotal());
+        orders.setDiscount(2000.00);
+
+        ordersDao.save(orders);
+
+        List<ShoppingCartDetails> cartDetailsList = shoppingCartDetailsDao.getDetailsByCart(shoppingCart);
+        for(ShoppingCartDetails shoppingCartDetails : cartDetailsList){
+            shoppingCartDetailsDao.delete(shoppingCartDetails);
+        }
+
+        shoppingCart.setTotal(0);
+        ShoppingCart updated= shoppingCartDao.save(shoppingCart);
+        if(updated!=null){
+            result = true;
+        }else {
+            result = false;
+        }
+        return result;
     }
 
     @Override
