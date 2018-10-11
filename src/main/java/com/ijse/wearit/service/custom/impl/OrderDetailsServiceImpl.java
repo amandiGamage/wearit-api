@@ -27,7 +27,14 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
     @Override
     public boolean update(OrderDetailsDTO orderDetailsDTO) throws Exception {
-        return false;
+        OrderDetailsDTO updatedDTO = (OrderDetailsDTO)
+                modelConverter.convertToDTO(orderDetailsDao.save((OrderDetails)
+                        modelConverter.convertToModel(orderDetailsDTO,OrderDetails.class)),OrderDetailsDTO.class);
+        if(updatedDTO!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
