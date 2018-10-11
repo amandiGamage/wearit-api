@@ -1,13 +1,20 @@
 package com.ijse.wearit.service.custom.impl;
 
+import com.ijse.wearit.dao.CategoryDao;
 import com.ijse.wearit.dao.ItemDao;
 import com.ijse.wearit.dto.ItemDTO;
+import com.ijse.wearit.model.Category;
 import com.ijse.wearit.model.Item;
 import com.ijse.wearit.service.custom.ItemService;
 import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Optional;
 
 @Service
@@ -17,11 +24,52 @@ public class ItemServiceImpl implements ItemService {
     private ItemDao itemDao;
 
     @Autowired
+    private CategoryDao categoryDao;
+
+    @Autowired
     private ModelConverter modelConverter;
+
+    @Autowired
+    ServletContext context;
 
     @Override
     public boolean addItem(ItemDTO itemDTO) throws Exception {
-        return false;
+        boolean result = false;
+        MultipartFile file = itemDTO.getFile();
+        String staticPath="resources/images/Item/tempFile/";
+        String savedPath=staticPath+itemDTO.getFileName();
+        if (!file.isEmpty()) {
+            try {
+                byte[] bytes = file.getBytes();
+                String path = context.getRealPath("/resources/images/Item") + File.separator +
+                        "tempFile";
+                File dir = new File(path);
+                if (!dir.exists()){
+                    dir.mkdirs();
+                }
+                File destinationFile = new File(dir.getAbsolutePath()+File.separator+itemDTO.getFileName());
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(destinationFile));
+                stream.write(bytes);
+                stream.close();
+
+                Category category = categoryDao.getCategoryByName(itemDTO.getCategoryName());
+
+                Item item = new Item();
+                item.setDescription(itemDTO.getDescription());
+                item.setPaths(savedPath);
+                item.setCategory(category);
+                ItemDTO savedDTO = (ItemDTO) modelConverter.convertToDTO(
+                        itemDao.save((Item) modelConverter.convertToModel(itemDTO,Item.class)),ItemDTO.class);
+                if (savedDTO != null){
+                    result = true;
+                }else {
+                    result = false;
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return result;
     }
 
     @Override
