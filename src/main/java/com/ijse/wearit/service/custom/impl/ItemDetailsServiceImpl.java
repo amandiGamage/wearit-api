@@ -1,6 +1,8 @@
 package com.ijse.wearit.service.custom.impl;
 
+import com.ijse.wearit.dao.ItemDao;
 import com.ijse.wearit.dao.ItemDetailsDao;
+import com.ijse.wearit.dao.SizesDao;
 import com.ijse.wearit.dto.ItemDTO;
 import com.ijse.wearit.dto.ItemDetailsDTO;
 import com.ijse.wearit.dto.SizeDTO;
@@ -20,6 +22,12 @@ public class ItemDetailsServiceImpl implements ItemDetailsService {
 
     @Autowired
     private ItemDetailsDao itemDetailsDao;
+
+    @Autowired
+    private ItemDao itemDao;
+
+    @Autowired
+    private SizesDao sizesDao;
 
     @Autowired
     private ModelConverter modelConverter;
@@ -46,7 +54,26 @@ public class ItemDetailsServiceImpl implements ItemDetailsService {
 
     @Override
     public boolean addItemDetailsToItem(String description, List<ItemDetailsDTO> itemdetailsList) throws Exception {
-        return false;
+        boolean result = false;
+        Item searchedItem = itemDao.getItemByDescription(description);
+
+        for (ItemDetailsDTO itemDetailsDTO : itemdetailsList) {
+            Item item = itemDao.getItemByDescription(itemDetailsDTO.getItemDescription());
+            Sizes sizes = sizesDao.getSizeByName(itemDetailsDTO.getSizeName());
+            ItemDetails itemDetails = new ItemDetails();
+            itemDetails.setQtyOnHand(itemDetailsDTO.getQtyOnHand());
+            itemDetails.setUnitPrice(itemDetailsDTO.getUnitPrice());
+            itemDetails.setItem(item);
+            itemDetails.setSizes(sizes);
+            ItemDetails saved = itemDetailsDao.save(itemDetails);
+            if (saved!=null){
+                result = true;
+            }else {
+                result = false;
+            }
+        }
+
+        return result;
     }
 
     @Override
