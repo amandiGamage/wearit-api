@@ -37,7 +37,11 @@ public class ItemDetailsServiceImpl implements ItemDetailsService {
 
     @Override
     public List<ItemDetailsDTO> searchByItemID(ItemDTO itemDTO) throws Exception {
-        return null;
+        List<ItemDetailsDTO> itemDetailsDTOList = (List<ItemDetailsDTO>)
+                modelConverter.convertToDTO(itemDetailsDao.searchByItemID(
+                        (Item) modelConverter.convertToModel(itemDTO,Item.class)),ItemDetailsDTO.class);
+
+        return itemDetailsDTOList;
     }
 
     @Override
