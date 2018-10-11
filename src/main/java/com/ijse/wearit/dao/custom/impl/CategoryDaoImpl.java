@@ -49,13 +49,4 @@ public class CategoryDaoImpl implements CategoryDaoCustom {
         s.close();
         return page;
     }
-
-    @Override
-    public boolean updateCategory(Category category) throws Exception {
-        Session s= sessionFactory.openSession();
-        s.update(category);
-        s.close();
-        System.out.println("Called");
-        return true;
-    }
 }
