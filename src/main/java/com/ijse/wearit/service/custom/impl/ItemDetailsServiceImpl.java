@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemDetailsServiceImpl implements ItemDetailsService {
@@ -64,7 +65,14 @@ public class ItemDetailsServiceImpl implements ItemDetailsService {
 
     @Override
     public ItemDetailsDTO findById(Integer id) throws Exception {
-        return null;
+        Optional<ItemDetails> byId = itemDetailsDao.findById(id);
+        boolean present = byId.isPresent();
+        if (present){
+            ItemDetailsDTO itemDetailsDTO = (ItemDetailsDTO) modelConverter.convertToDTO(byId.get(),ItemDetails.class);
+            return itemDetailsDTO;
+        }else {
+            return null;
+        }
     }
 
     @Override
