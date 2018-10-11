@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -58,7 +59,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO findById(Integer id) throws Exception {
-        return null;
+        Optional<Category> byId = categoryDao.findById(id);
+        boolean present = byId.isPresent();
+        if (present){
+            CategoryDTO categoryDTO = (CategoryDTO) modelConvertor.convertToDTO(byId.get(),CategoryDTO.class);
+            return categoryDTO;
+        }else {
+            return null;
+        }
     }
 
     @Override
