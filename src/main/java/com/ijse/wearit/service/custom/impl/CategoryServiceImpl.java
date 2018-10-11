@@ -23,12 +23,21 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDTO getCategoryByName(String name) throws Exception {
-        return null;
+        Category categoryByName = categoryDao.getCategoryByName(name);
+        if (categoryByName!=null){
+            CategoryDTO categoryDTO = (CategoryDTO) modelConvertor.convertToDTO(categoryByName,CategoryDTO.class);
+            return categoryDTO;
+        }else {
+            return null;
+        }
     }
 
     @Override
     public List<CategoryDTO> getPaginatedList(Integer offset, Integer limit) throws Exception {
-        return null;
+        List<Category> paginatedList = categoryDao.getPaginatedList(offset, limit);
+        List<CategoryDTO> dtoList = (List<CategoryDTO>) modelConvertor.convertToDTOList(paginatedList,Category.class);
+        return dtoList;
+
     }
 
     @Override
