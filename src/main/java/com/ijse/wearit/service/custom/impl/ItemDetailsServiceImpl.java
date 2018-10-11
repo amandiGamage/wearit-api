@@ -4,7 +4,9 @@ import com.ijse.wearit.dao.ItemDetailsDao;
 import com.ijse.wearit.dto.ItemDTO;
 import com.ijse.wearit.dto.ItemDetailsDTO;
 import com.ijse.wearit.dto.SizeDTO;
+import com.ijse.wearit.model.Item;
 import com.ijse.wearit.model.ItemDetails;
+import com.ijse.wearit.model.Sizes;
 import com.ijse.wearit.service.custom.ItemDetailsService;
 import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,13 @@ public class ItemDetailsServiceImpl implements ItemDetailsService {
 
     @Override
     public ItemDetailsDTO getItemDetailsBySizeAndItem(SizeDTO sizeByName, ItemDTO itemDTO) throws Exception {
-        return null;
+        ItemDetailsDTO itemDetailsDTO = (ItemDetailsDTO) modelConverter.convertToDTO
+                ((ItemDetails) itemDetailsDao.getItemDetailsBySizeAndItem
+                        ((Sizes) modelConverter.convertToModel(sizeByName,Sizes.class),
+                                (Item) modelConverter.convertToModel(itemDTO,Item.class)),ItemDetailsDTO.class);
+
+        return itemDetailsDTO;
+
     }
 
     @Override
