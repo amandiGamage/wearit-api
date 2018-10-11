@@ -40,7 +40,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean update(CategoryDTO categoryDTO) throws Exception {
-        return false;
+        CategoryDTO savedDTO = (CategoryDTO) modelConvertor.convertToDTO(
+                categoryDao.save((Category) modelConvertor.convertToModel(
+                        categoryDTO,Category.class)),CategoryDTO.class);
+        if(savedDTO!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
