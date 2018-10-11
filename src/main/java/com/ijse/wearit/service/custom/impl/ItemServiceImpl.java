@@ -31,7 +31,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public boolean update(ItemDTO itemDTO) throws Exception {
-        return false;
+        ItemDTO updatedDTO = (ItemDTO) modelConverter.convertToDTO(
+                itemDao.save((Item) modelConverter.convertToModel(itemDTO,Item.class)),ItemDTO.class);
+        if(updatedDTO!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
