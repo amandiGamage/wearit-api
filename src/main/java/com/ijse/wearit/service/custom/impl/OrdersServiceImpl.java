@@ -42,7 +42,8 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public boolean delete(OrdersDTO ordersDTO) throws Exception {
-        return false;
+        ordersDao.delete((Orders) modelConverter.convertToModel(ordersDTO,Orders.class));
+        return true;
     }
 
     @Override
