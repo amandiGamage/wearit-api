@@ -1,10 +1,9 @@
 package com.ijse.wearit.service.custom.impl;
 
-import com.ijse.wearit.dao.ShoppingCartDetailsDao;
+import com.ijse.wearit.dao.*;
 import com.ijse.wearit.dto.ShoppingCartDTO;
 import com.ijse.wearit.dto.ShoppingCartDetailsDTO;
-import com.ijse.wearit.model.ShoppingCart;
-import com.ijse.wearit.model.ShoppingCartDetails;
+import com.ijse.wearit.model.*;
 import com.ijse.wearit.service.custom.ShoppingCartDetailsService;
 import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,21 @@ public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsServic
 
     @Autowired
     private ModelConverter modelConverter;
+
+    @Autowired
+    private ItemDao itemDao;
+
+    @Autowired
+    private ItemDetailsDao itemDetailsDao;
+
+    @Autowired
+    private SizesDao sizesDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private ShoppingCartDao shoppingCartDao;
 
     @Override
     public ShoppingCartDetailsDTO getByItemDetail(Integer id) throws Exception {
@@ -39,7 +53,28 @@ public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsServic
 
     @Override
     public boolean addShoppingCartDetailTShopin(String description, String custName, String size, int orderQty, double unitPrice) throws Exception {
-        return false;
+        boolean result;
+        User user = userDao.getUserByUserName(custName);
+        ShoppingCart shoppingCart = userDao.getShoppingCartByUserId(user.getUserID());
+
+        Item item = itemDao.getItemByDescription(description);
+        Sizes sizes = sizesDao.getSizeByName(size);
+        ItemDetails itemDetails = itemDetailsDao.getItemDetailsBySizeAndItem(sizes, item);
+        double amount = unitPrice * orderQty;
+
+        ShoppingCartDetails shoppingCartDetails = new ShoppingCartDetails();
+        shoppingCartDetails.setShoppingCart(shoppingCart);
+        shoppingCartDetails.setItemDetails(itemDetails);
+        shoppingCartDetails.setOrderQty(orderQty);
+        shoppingCartDetails.setAmount(amount);
+
+        ShoppingCartDetails saved = shoppingCartDetailsDao.save(shoppingCartDetails);
+        if (saved != null){
+            result = true;
+        }else {
+            result = false;
+        }
+        return result;
     }
 
     @Override
