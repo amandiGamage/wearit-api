@@ -49,7 +49,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean delete(UserDTO userDTO) throws Exception {
-        return false;
+        userDao.delete((User) modelConverter.convertToModel(userDTO,User.class));
+        return true;
     }
 
     @Override
