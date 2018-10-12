@@ -3,6 +3,7 @@ package com.ijse.wearit.service.custom.impl;
 import com.ijse.wearit.dao.ShoppingCartDetailsDao;
 import com.ijse.wearit.dto.ShoppingCartDTO;
 import com.ijse.wearit.dto.ShoppingCartDetailsDTO;
+import com.ijse.wearit.model.ShoppingCart;
 import com.ijse.wearit.model.ShoppingCartDetails;
 import com.ijse.wearit.service.custom.ShoppingCartDetailsService;
 import com.ijse.wearit.util.ModelConverter;
@@ -29,7 +30,11 @@ public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsServic
 
     @Override
     public List<ShoppingCartDetailsDTO> getDetailsByCart(ShoppingCartDTO shoppingCartDTO) throws Exception {
-        return null;
+        List<ShoppingCartDetailsDTO> shoppingCartDetailsDTOS = modelConverter.convertToDTOList(
+                (List<ShoppingCartDetails>) shoppingCartDetailsDao.getDetailsByCart(
+                        (ShoppingCart) modelConverter.convertToModel(
+                                shoppingCartDTO,ShoppingCartDetails.class)),ShoppingCartDetails.class);
+        return shoppingCartDetailsDTOS;
     }
 
     @Override
