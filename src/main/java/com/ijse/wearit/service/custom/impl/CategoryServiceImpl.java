@@ -18,14 +18,14 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryDao categoryDao;
 
     @Autowired
-    private ModelConverter modelConvertor;
+    private ModelConverter modelConverter;
 
 
     @Override
     public CategoryDTO getCategoryByName(String name) throws Exception {
         Category categoryByName = categoryDao.getCategoryByName(name);
         if (categoryByName!=null){
-            CategoryDTO categoryDTO = (CategoryDTO) modelConvertor.convertToDTO(categoryByName,CategoryDTO.class);
+            CategoryDTO categoryDTO = (CategoryDTO) modelConverter.convertToDTO(categoryByName,CategoryDTO.class);
             return categoryDTO;
         }else {
             return null;
@@ -35,23 +35,23 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<CategoryDTO> getPaginatedList(Integer offset, Integer limit) throws Exception {
         List<Category> paginatedList = categoryDao.getPaginatedList(offset, limit);
-        List<CategoryDTO> dtoList = (List<CategoryDTO>) modelConvertor.convertToDTOList(paginatedList,Category.class);
+        List<CategoryDTO> dtoList = (List<CategoryDTO>) modelConverter.convertToDTOList(paginatedList,Category.class);
         return dtoList;
 
     }
 
     @Override
     public CategoryDTO add(CategoryDTO categoryDTO) throws Exception {
-        CategoryDTO savedDTO = (CategoryDTO) modelConvertor.convertToDTO(
-                categoryDao.save((Category) modelConvertor.convertToModel(
+        CategoryDTO savedDTO = (CategoryDTO) modelConverter.convertToDTO(
+                categoryDao.save((Category) modelConverter.convertToModel(
                         categoryDTO,Category.class)),CategoryDTO.class);
         return savedDTO;
     }
 
     @Override
     public boolean update(CategoryDTO categoryDTO) throws Exception {
-        CategoryDTO savedDTO = (CategoryDTO) modelConvertor.convertToDTO(
-                categoryDao.save((Category) modelConvertor.convertToModel(
+        CategoryDTO savedDTO = (CategoryDTO) modelConverter.convertToDTO(
+                categoryDao.save((Category) modelConverter.convertToModel(
                         categoryDTO,Category.class)),CategoryDTO.class);
         if(savedDTO!=null){
             return true;
@@ -62,7 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public boolean delete(CategoryDTO categoryDTO) throws Exception {
-        categoryDao.delete((Category) modelConvertor.convertToModel(categoryDTO,Category.class));
+        categoryDao.delete((Category) modelConverter.convertToModel(categoryDTO,Category.class));
         return true;
     }
 
@@ -71,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> byId = categoryDao.findById(id);
         boolean present = byId.isPresent();
         if (present){
-            CategoryDTO categoryDTO = (CategoryDTO) modelConvertor.convertToDTO(byId.get(),CategoryDTO.class);
+            CategoryDTO categoryDTO = (CategoryDTO) modelConverter.convertToDTO(byId.get(),CategoryDTO.class);
             return categoryDTO;
         }else {
             return null;
@@ -80,6 +80,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Iterable<CategoryDTO> getAll() throws Exception {
-        return null;
+        Iterable<CategoryDTO> categoryDTOS = (Iterable<CategoryDTO>)
+                modelConverter.convertToDTOList(categoryDao.findAll(),CategoryDTO.class);
+        return categoryDTOS;
     }
 }
