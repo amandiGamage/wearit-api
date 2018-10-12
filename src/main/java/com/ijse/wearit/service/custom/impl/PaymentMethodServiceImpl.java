@@ -39,7 +39,9 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     @Override
     public boolean delete(PaymentMethodDTO paymentMethodDTO) throws Exception {
-        return false;
+        paymentMethodDao.delete((PaymentMethod)
+                modelConverter.convertToModel(paymentMethodDTO,PaymentMethod.class));
+        return true;
     }
 
     @Override
