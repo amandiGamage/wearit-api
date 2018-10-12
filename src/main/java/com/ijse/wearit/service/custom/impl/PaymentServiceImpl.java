@@ -38,7 +38,9 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public boolean delete(PaymentDTO paymentDTO) throws Exception {
-        return false;
+        paymentDao.delete((Payment)
+                modelConverter.convertToModel(paymentDTO,Payment.class));
+        return true;
     }
 
     @Override
