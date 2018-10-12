@@ -8,6 +8,8 @@ import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ShippingInfoServiceImpl implements ShippingInfoService {
 
@@ -47,7 +49,14 @@ public class ShippingInfoServiceImpl implements ShippingInfoService {
 
     @Override
     public ShippingInfoDTO findById(Integer id) throws Exception {
-        return null;
+        Optional<ShippingInfo> byId = shippingInfoDao.findById(id);
+        boolean present = byId.isPresent();
+        if (present){
+            ShippingInfoDTO shippingInfoDTO = (ShippingInfoDTO) modelConverter.convertToDTO(byId.get(),ShippingInfo.class);
+            return shippingInfoDTO;
+        }else {
+            return null;
+        }
     }
 
     @Override
