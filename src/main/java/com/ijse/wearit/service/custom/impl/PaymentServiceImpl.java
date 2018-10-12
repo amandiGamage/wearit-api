@@ -8,6 +8,8 @@ import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
@@ -45,7 +47,14 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentDTO findById(Integer id) throws Exception {
-        return null;
+        Optional<Payment> byId = paymentDao.findById(id);
+        boolean present = byId.isPresent();
+        if (present){
+            PaymentDTO paymentDTO = (PaymentDTO) modelConverter.convertToDTO(byId.get(),Payment.class);
+            return paymentDTO;
+        }else {
+            return null;
+        }
     }
 
     @Override
