@@ -26,7 +26,14 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public boolean update(PaymentDTO paymentDTO) throws Exception {
-        return false;
+        PaymentDTO updatedDTO = (PaymentDTO) modelConverter.convertToDTO(
+                paymentDao.save((Payment) modelConverter.convertToModel(paymentDTO,Payment.class)),PaymentDTO.class);
+
+        if(updatedDTO!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
