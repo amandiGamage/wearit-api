@@ -57,7 +57,9 @@ public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsServic
 
     @Override
     public boolean delete(ShoppingCartDetailsDTO shoppingCartDetailsDTO) throws Exception {
-        return false;
+        shoppingCartDetailsDao.delete((ShoppingCartDetails) modelConverter.convertToModel(
+                shoppingCartDetailsDTO,ShoppingCartDetails.class));
+        return true;
     }
 
     @Override
