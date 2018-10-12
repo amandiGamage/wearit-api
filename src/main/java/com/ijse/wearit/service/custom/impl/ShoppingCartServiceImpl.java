@@ -8,6 +8,8 @@ import com.ijse.wearit.util.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
@@ -45,7 +47,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartDTO findById(Integer id) throws Exception {
-        return null;
+        Optional<ShoppingCart> byId = shoppingCartDao.findById(id);
+        boolean present = byId.isPresent();
+        if (present){
+            ShoppingCartDTO shoppingCartDTO = (ShoppingCartDTO) modelConverter.convertToDTO(byId.get(),ShoppingCart.class);
+            return shoppingCartDTO;
+        }else {
+            return null;
+        }
     }
 
     @Override
