@@ -59,6 +59,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public Iterable<ShoppingCartDTO> getAll() throws Exception {
-        return null;
+        Iterable<ShoppingCartDTO> shoppingCartDTOS = (Iterable<ShoppingCartDTO>)
+                modelConverter.convertToDTOList(shoppingCartDao.findAll(),ShoppingCartDTO.class);
+        return shoppingCartDTOS;
     }
 }
