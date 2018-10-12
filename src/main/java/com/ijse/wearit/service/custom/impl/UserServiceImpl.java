@@ -69,6 +69,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Iterable<UserDTO> getAll() throws Exception {
-        return null;
+        Iterable<UserDTO> userDTOS = (Iterable<UserDTO>)
+                modelConverter.convertToDTOList(userDao.findAll(),UserDTO.class);
+        return userDTOS;
     }
 }
