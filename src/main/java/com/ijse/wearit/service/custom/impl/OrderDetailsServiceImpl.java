@@ -60,6 +60,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 
     @Override
     public Iterable<OrderDetailsDTO> getAll() throws Exception {
-        return null;
+        Iterable<OrderDetailsDTO> orderDetailsDTOS = (Iterable<OrderDetailsDTO>)
+                modelConverter.convertToDTOList(orderDetailsDao.findAll(),OrderDetailsDTO.class);
+        return orderDetailsDTOS;
     }
 }
