@@ -61,8 +61,8 @@ public class ShippingInfoServiceImpl implements ShippingInfoService {
 
     @Override
     public Iterable<ShippingInfoDTO> getAll() throws Exception {
-        Iterable<ShippingInfoDTO> paymentMethodDTOS = (Iterable<ShippingInfoDTO>)
+        Iterable<ShippingInfoDTO> shippingInfoDTOS = (Iterable<ShippingInfoDTO>)
                 modelConverter.convertToDTOList(shippingInfoDao.findAll(),ShippingInfoDTO.class);
-        return paymentMethodDTOS;
+        return shippingInfoDTOS;
     }
 }
