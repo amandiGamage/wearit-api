@@ -1,12 +1,23 @@
 package com.ijse.wearit.service.custom.impl;
 
+import com.ijse.wearit.dao.UserDao;
 import com.ijse.wearit.dto.ShoppingCartDTO;
 import com.ijse.wearit.dto.UserDTO;
+import com.ijse.wearit.model.User;
 import com.ijse.wearit.service.custom.UserService;
+import com.ijse.wearit.util.ModelConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private ModelConverter modelConverter;
+
     @Override
     public UserDTO getUserByNam(String userName) throws Exception {
         return null;
@@ -19,12 +30,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO add(UserDTO userDTO) throws Exception {
-        return null;
+        UserDTO savedDTO = (UserDTO) modelConverter.convertToDTO(
+                userDao.save((User) modelConverter.convertToModel(userDTO,User.class)),UserDTO.class);
+        return savedDTO;
     }
 
     @Override
     public boolean update(UserDTO userDTO) throws Exception {
-        return false;
+        UserDTO updatedDTO = (UserDTO) modelConverter.convertToDTO(
+                userDao.save((User) modelConverter.convertToModel(userDTO,User.class)),UserDTO.class);
+
+        if(updatedDTO!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
