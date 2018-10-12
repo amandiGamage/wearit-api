@@ -21,13 +21,16 @@ public class UserServiceImpl implements UserService {
     private ModelConverter modelConverter;
 
     @Override
-    public UserDTO getUserByNam(String userName) throws Exception {
-        return null;
+    public UserDTO getUserByName(String userName) throws Exception {
+        UserDTO searchedUser = (UserDTO) modelConverter.convertToDTO(userDao.getUserByUserName(userName),UserDTO.class);
+        return searchedUser;
     }
 
     @Override
     public ShoppingCartDTO getShoppingCartByUserId(Integer userId) throws Exception {
-        return null;
+        ShoppingCartDTO searched = (ShoppingCartDTO) modelConverter.convertToDTO(
+                userDao.getShoppingCartByUserId(userId),ShoppingCartDTO.class);
+        return searched;
     }
 
     @Override
