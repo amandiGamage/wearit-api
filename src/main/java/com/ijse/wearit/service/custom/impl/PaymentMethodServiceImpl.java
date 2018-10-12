@@ -62,6 +62,8 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     @Override
     public Iterable<PaymentMethodDTO> getAll() throws Exception {
-        return null;
+        Iterable<PaymentMethodDTO> paymentMethodDTOS = (Iterable<PaymentMethodDTO>)
+                modelConverter.convertToDTOList(paymentMethodDao.findAll(),PaymentMethodDTO.class);
+        return paymentMethodDTOS;
     }
 }
