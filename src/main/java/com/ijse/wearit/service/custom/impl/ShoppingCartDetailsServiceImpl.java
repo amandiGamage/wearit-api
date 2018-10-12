@@ -23,7 +23,8 @@ public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsServic
 
     @Override
     public ShoppingCartDetailsDTO getByItemDetail(Integer id) throws Exception {
-        return null;
+        return (ShoppingCartDetailsDTO) modelConverter.convertToDTO(
+                shoppingCartDetailsDao.getByItemDetail(id),ShoppingCartDetailsDTO.class);
     }
 
     @Override
