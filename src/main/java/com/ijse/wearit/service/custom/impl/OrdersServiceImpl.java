@@ -113,6 +113,8 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public Iterable<OrdersDTO> getAll() throws Exception {
-        return null;
+        Iterable<OrdersDTO> ordersDTOS = (Iterable<OrdersDTO>)
+                modelConverter.convertToDTOList(paymentDao.findAll(),OrdersDTO.class);
+        return ordersDTOS;
     }
 }
