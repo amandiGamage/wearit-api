@@ -79,8 +79,8 @@ public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsServic
 
     @Override
     public Iterable<ShoppingCartDetailsDTO> getAll() throws Exception {
-        Iterable<ShoppingCartDetailsDTO> paymentMethodDTOS = (Iterable<ShoppingCartDetailsDTO>)
+        Iterable<ShoppingCartDetailsDTO> shoppingCartDetailsDTOS = (Iterable<ShoppingCartDetailsDTO>)
                 modelConverter.convertToDTOList(shoppingCartDetailsDao.findAll(),ShoppingCartDetailsDTO.class);
-        return paymentMethodDTOS;
+        return shoppingCartDetailsDTOS;
     }
 }
