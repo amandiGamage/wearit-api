@@ -27,12 +27,22 @@ public class ShippingInfoServiceImpl implements ShippingInfoService {
 
     @Override
     public boolean update(ShippingInfoDTO shippingInfoDTO) throws Exception {
-        return false;
+        ShippingInfoDTO updatedDTO = (ShippingInfoDTO) modelConverter.convertToDTO(
+                shippingInfoDao.save((ShippingInfo) modelConverter.convertToModel(
+                        shippingInfoDTO,ShippingInfo.class)),ShippingInfoDTO.class);
+
+        if(updatedDTO!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
     public boolean delete(ShippingInfoDTO shippingInfoDTO) throws Exception {
-        return false;
+        shippingInfoDao.delete((ShippingInfo) modelConverter.convertToModel(
+                shippingInfoDTO,ShippingInfo.class));
+        return true;
     }
 
     @Override
