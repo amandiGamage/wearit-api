@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsService {
@@ -64,11 +65,22 @@ public class ShoppingCartDetailsServiceImpl implements ShoppingCartDetailsServic
 
     @Override
     public ShoppingCartDetailsDTO findById(Integer id) throws Exception {
-        return null;
+        Optional<ShoppingCartDetails> byId = shoppingCartDetailsDao.findById(id);
+        boolean present = byId.isPresent();
+        if (present){
+            ShoppingCartDetailsDTO shoppingCartDetailsDTO =
+                    (ShoppingCartDetailsDTO) modelConverter.convertToDTO(byId.get(),ShoppingCartDetails.class);
+            return shoppingCartDetailsDTO;
+        }else {
+            return null;
+        }
+
     }
 
     @Override
     public Iterable<ShoppingCartDetailsDTO> getAll() throws Exception {
-        return null;
+        Iterable<ShoppingCartDetailsDTO> paymentMethodDTOS = (Iterable<ShoppingCartDetailsDTO>)
+                modelConverter.convertToDTOList(shoppingCartDetailsDao.findAll(),ShoppingCartDetailsDTO.class);
+        return paymentMethodDTOS;
     }
 }
