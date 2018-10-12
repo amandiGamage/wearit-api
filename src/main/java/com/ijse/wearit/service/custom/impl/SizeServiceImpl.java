@@ -59,6 +59,8 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public Iterable<SizeDTO> getAll() throws Exception {
-        return null;
+        Iterable<SizeDTO> sizeDTOS = (Iterable<SizeDTO>)
+                modelConverter.convertToDTOList(sizesDao.findAll(),SizeDTO.class);
+        return sizeDTOS;
     }
 }
