@@ -149,6 +149,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Iterable<ItemDTO> getAll() throws Exception {
-        return null;
+        Iterable<ItemDTO> itemDTOS = (Iterable<ItemDTO>)
+                modelConverter.convertToDTOList(itemDao.findAll(),ItemDTO.class);
+        return itemDTOS;
     }
 }
