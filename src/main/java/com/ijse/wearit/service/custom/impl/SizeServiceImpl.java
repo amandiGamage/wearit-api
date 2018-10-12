@@ -63,4 +63,10 @@ public class SizeServiceImpl implements SizeService {
                 modelConverter.convertToDTOList(sizesDao.findAll(),SizeDTO.class);
         return sizeDTOS;
     }
+
+    @Override
+    public SizeDTO getSizeByName(String size) throws Exception {
+        SizeDTO searched = (SizeDTO) modelConverter.convertToDTO(sizesDao.getSizeByName(size),SizeDTO.class);
+        return searched;
+    }
 }
