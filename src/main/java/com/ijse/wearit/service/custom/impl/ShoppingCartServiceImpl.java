@@ -27,12 +27,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public boolean update(ShoppingCartDTO shoppingCartDTO) throws Exception {
-        return false;
+        ShoppingCartDTO updatedDTO = (ShoppingCartDTO) modelConverter.convertToDTO(
+                shoppingCartDao.save((ShoppingCart) modelConverter.convertToModel(
+                        shoppingCartDTO,ShoppingCart.class)),ShoppingCartDTO.class);
+        if(updatedDTO!=null){
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override
     public boolean delete(ShoppingCartDTO shoppingCartDTO) throws Exception {
-        return false;
+        shoppingCartDao.delete((ShoppingCart) modelConverter.convertToModel(shoppingCartDTO,ShoppingCart.class));
+        return true;
     }
 
     @Override
