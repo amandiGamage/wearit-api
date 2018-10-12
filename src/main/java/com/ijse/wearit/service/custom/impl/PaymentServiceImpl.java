@@ -1,14 +1,27 @@
 package com.ijse.wearit.service.custom.impl;
 
+import com.ijse.wearit.dao.PaymentDao;
 import com.ijse.wearit.dto.PaymentDTO;
+import com.ijse.wearit.model.Payment;
 import com.ijse.wearit.service.custom.PaymentService;
+import com.ijse.wearit.util.ModelConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
+
+    @Autowired
+    private PaymentDao paymentDao;
+
+    @Autowired
+    private ModelConverter modelConverter;
+
     @Override
     public PaymentDTO add(PaymentDTO paymentDTO) throws Exception {
-        return null;
+        PaymentDTO savedDTO = (PaymentDTO) modelConverter.convertToDTO(
+                paymentDao.save((Payment) modelConverter.convertToModel(paymentDTO,Payment.class)),PaymentDTO.class);
+        return savedDTO;
     }
 
     @Override
