@@ -6,4 +6,5 @@ import com.ijse.wearit.service.SuperService;
 
 
 public interface SizeService extends SuperService<SizeDTO>{
+    public SizeDTO getSizeByName(String size)throws Exception;
 }
