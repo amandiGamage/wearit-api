@@ -39,7 +39,8 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public boolean delete(SizeDTO sizeDTO) throws Exception {
-        return false;
+        sizesDao.delete((Sizes) modelConverter.convertToModel(sizeDTO,Sizes.class));
+        return true;
     }
 
     @Override
